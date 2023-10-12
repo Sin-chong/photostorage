@@ -1,0 +1,41 @@
+<!DOCTYPE html>  
+<html>  
+<head>  
+  <title>图片上传和检索示例</title>  
+</head>  
+<body>  
+  <h1>图片上传和检索示例</h1>  
+  <form enctype="multipart/form-data" method="post" action="/upload">  
+    <label for="image">选择图片:</label>  
+    <input type="file" id="image" name="image" required>  
+    <button type="submit">上传</button>  
+  </form>  
+  <form onsubmit="retrieveImage(event)">  
+    <label for="imageId">图片ID:</label>  
+    <input type="text" id="imageId" name="imageId">  
+    <button type="submit">检索</button>  
+  </form>  
+  <div id="imageData"></div>  
+  
+  <script>  
+    function retrieveImage(event) {  
+      event.preventDefault(); // 阻止表单提交的默认行为  
+      const imageId· = document.getElementById('imageId').value;  
+      fetch(`/image/${imageId}`)  
+        .then(response => {  
+          console.log('Response:', response); // 打印响应体  
+          return response.blob();  
+        })  
+        .then(imageData => {  
+          const url = URL.createObjectURL(imageData);  
+          const imgElement = document.createElement('img');  
+          imgElement.src = url;  
+          console.log('Img src:', imgElement.src); // 打印img元素的src属性  
+          document.getElementById('imageData').innerHTML = ''; // 清空旧图片  
+          document.getElementById('imageData').appendChild(imgElement); // 显示新图片  
+        })  
+        .catch(error => console.error('Error:', error));  
+    }  
+  </script>  
+</body>  
+</html>

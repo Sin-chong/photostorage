@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link type="text/css" href="./css/page1.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <div id="nav">
+        <li>homepage</li>
+        <li>photo</li>
+        <li>latest</li>
+    </div>
+    <button class="btn-exit">EXIT</button>
+    <div class="container">
+        <div id="personalmassage">
+            <div id="head1">
+                <img src="./img/head.png">
+            </div>
+
+            <form>
+                <label>username:</label>&nbsp;&nbsp;&nbsp;<label>Sam</label><br>
+                <label>email: </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>xxxxxxxx</label><br>
+                <label>age:
+                </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>20</label><br>
+                <label>gender: </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>man</label><br>
+                
+            </form>
+            
+        </div>
+
+        <div id="line1"></div>
+
+
+
+        <div id="pictures">
+            <h2>MY PICTURES</h2>
+            <input style="display: none;" id="add" type="file" accept="image/*" onchange="addpic(event)">  
+            <button id="add-btn" onclick="getElementById('add').click()">ADD</button>
+            <div id="picture1" class="box">
+                <img src="./img/ex1.jpg" class="img1">
+            </div>
+            <div id="picture2" class="box">
+                <img src="./img/ex2.jpg" class="img1">
+            </div>
+            <div id="picture3" class="box">
+                <img src="./img/ex3.jpg" class="img1">
+            </div>
+
+            <div>
+                <button class="btn1" onclick="lastpicture()">LAST</button>
+                <button class="btn2" onclick="nextpicture()">NEXT</button>
+            </div>
+
+        </div>
+
+
+    </div>
+
+    <div id="newwindow">
+        <img id="transimg" onclick="viewexit()">
+    </div>
+
+    <script>
+        var img01 = document.querySelectorAll('.img1');
+        var box01 = document.querySelectorAll('.box');
+        var newwd = document.getElementById('newwindow');
+        var newimg = document.getElementById('transimg');
+        var pic1 = document.getElementById('picture1');
+        var pic1originalStyle = document.getElementById('picture1').getAttribute("style");
+        var pic2 = document.getElementById('picture2');
+        var pic2originalStyle = document.getElementById('picture2').getAttribute("style");
+        var pic3 = document.getElementById('picture3');
+        var pic3originalStyle = document.getElementById('picture3').getAttribute("style");
+       
+
+
+        for (var i = 0; i < box01.length; i++) {
+            box01[i].onclick = function () {  
+                newwd.style.display = "block";
+                newimg.src = this.querySelector("img").src;
+            }
+        }
+
+        function viewexit() {
+            newwd.style.display = "none"
+        }
+
+        function lastpicture() {
+            pic1.style.transform = "scale(0.5)";
+            pic2.style.transform = "scale(0.5)";
+            pic3.style.transform = "scale(0.5)";
+            var t = pic3.innerHTML;
+
+            setTimeout(function () {
+                pic3.innerHTML = pic2.innerHTML;
+                pic2.innerHTML = pic1.innerHTML;
+                pic1.innerHTML = t;
+                pic1.setAttribute("style", pic1originalStyle);
+                pic2.setAttribute("style", pic2originalStyle);
+                pic3.setAttribute("style", pic3originalStyle);
+            }, 200);
+            for (var i = 0; i < img01.length; i++) {
+                img01[i].setAttribute("style", img11originalStyle[I]);
+            }
+
+
+        }
+
+        function nextpicture() {
+            pic1.style.transform = "scale(0.5)";
+            pic2.style.transform = "scale(0.5)";
+            pic3.style.transform = "scale(0.5)";
+            var t = pic1.innerHTML;
+            setTimeout(function () {
+                pic1.innerHTML = pic2.innerHTML;
+                pic2.innerHTML = pic3.innerHTML;
+                pic3.innerHTML = t;
+                pic1.setAttribute("style", pic1originalStyle);
+                pic2.setAttribute("style", pic2originalStyle);
+                pic3.setAttribute("style", pic3originalStyle);
+            }, 200);
+        }
+
+        function addpic(event){
+            var file=event.target.files[0];
+            if (file) {  
+                var reader = new FileReader(); // 创建 FileReader 对象  
+                reader.onload = function(event) {  
+                    pic3.querySelector("img").src=pic2.querySelector("img").src
+                    pic2.querySelector("img").src=pic1.querySelector("img").src
+                    pic1.querySelector("img").src = event.target.result; // 设置图像源为 FileReader 读取的结果  
+                };  
+                reader.readAsDataURL(file); // 读取文件内容作为 DataURL  
+            }  
+        }
+    </script>
+</body>
+
+</html>
