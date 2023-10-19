@@ -15,6 +15,7 @@
         <li>photo</li>
         <li>latest</li>
     </div>
+
     <button class="btn-exit">EXIT</button>
     <div class="container">
         <div id="personalmassage">
@@ -28,9 +29,9 @@
                 <label>age:
                 </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>20</label><br>
                 <label>gender: </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>man</label><br>
-                
+
             </form>
-            
+
         </div>
 
         <div id="line1"></div>
@@ -39,8 +40,11 @@
 
         <div id="pictures">
             <h2>MY PICTURES</h2>
-            <input style="display: none;" id="add" type="file" accept="image/*" onchange="addpic(event)">  
-            <button id="add-btn" onclick="getElementById('add').click()">ADD</button>
+            <form>  
+                <input style="display: none;" id="add" type="file" accept="image/*" onchange="addpic(event)">  
+                <button type="button" id="add-btn" onclick="document.getElementById('add').click()">ADD</button>  
+            </form>
+
             <div id="picture1" class="box">
                 <img src="./img/ex1.jpg" class="img1">
             </div>
@@ -76,11 +80,11 @@
         var pic2originalStyle = document.getElementById('picture2').getAttribute("style");
         var pic3 = document.getElementById('picture3');
         var pic3originalStyle = document.getElementById('picture3').getAttribute("style");
-       
+
 
 
         for (var i = 0; i < box01.length; i++) {
-            box01[i].onclick = function () {  
+            box01[i].onclick = function () {
                 newwd.style.display = "block";
                 newimg.src = this.querySelector("img").src;
             }
@@ -126,17 +130,36 @@
             }, 200);
         }
 
-        function addpic(event){
-            var file=event.target.files[0];
-            if (file) {  
-                var reader = new FileReader(); // 创建 FileReader 对象  
-                reader.onload = function(event) {  
-                    pic3.querySelector("img").src=pic2.querySelector("img").src
-                    pic2.querySelector("img").src=pic1.querySelector("img").src
-                    pic1.querySelector("img").src = event.target.result; // 设置图像源为 FileReader 读取的结果  
-                };  
-                reader.readAsDataURL(file); // 读取文件内容作为 DataURL  
-            }  
+        function addpic(event) {
+            var file = event.target.files[0];
+            if (file) {
+                var reader = new FileReader(); // 创建 FileReader 对象    
+                reader.onload = function (event) {
+                    pic3.querySelector("img").src = pic2.querySelector("img").src;
+                    pic2.querySelector("img").src = pic1.querySelector("img").src;
+                    pic1.querySelector("img").src = event.target.result; // 设置图像源为 FileReader 读取的结果    
+                };
+                reader.readAsDataURL(file); // 读取文件内容作为 DataURL    
+            }
+
+            var formdata = new FormData();
+            formdata.append('file', file); // 这里应该是 append 方法，而不是调用函数  
+
+            fetch('/upload', {
+                method: 'POST', // POST 应该是字符串，而不是变量  
+                body: formdata
+            })
+                .then(response => {
+                    console.log('error1');
+                    if (response.ok) {
+                        console.log('请求成功');
+                    } else {
+                        console.log('请求失败');
+                    }
+                })
+                .catch(error => {
+                    console.log('error');
+                });
         }
     </script>
 </body>
